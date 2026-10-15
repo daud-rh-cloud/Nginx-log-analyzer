@@ -111,7 +111,7 @@ else:
       #--> Cheak if the file is a (.gzip)  
      filename = os.path.basename(path)                           # abstruct the the file name from full pathname 
      if ".gz" in filename: 
-          f = gzip.open(path, "r") 
+          f = gzip.open(path, "rt") 
      else : 
           f =  open (path, "r") 
      
