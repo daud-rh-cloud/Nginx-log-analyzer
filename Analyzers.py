@@ -3,45 +3,46 @@ from Parsers import Parser
 class Analyzer: 
 
 
-    def __init__(self, filtered_list: list[list[str]]):
-        self.filtered_list = filtered_list
-        self.ip_list = []
-        self.path_list = []
-        self.statuscodes_list = []
+    def __init__(self, obj_entryList :Parser):
+        self.obj_entryList = obj_entryList
         self.time_list = []
         self.error_rate = 0 
-        pass 
-
+   
 
 
 
     def status_codes (self):
-        for line in self.filtered_list: 
-            self.statuscodes_list.append(line[8]) 
+        statuscodes_list = []
+        for obj in self.obj_entryList: 
+             statuscodes_list.append(obj.status) 
 
         
         counts = {}                                  
-        for code in self.statuscodes_list: 
+        for code in statuscodes_list: 
             if code in counts: 
                      counts[code] += 1
             else: 
                     counts[code] = 1 
-
-
+    
 #error rate count for 5xx 
         totalReq = 0  
         total5xx = 0 
         for i in counts.items():
-             totalReq += i[1]   ## the counts :value 
-             if "5" in i[0]:
-                total5xx += i [1]
-         
-        self.error_rate = total5xx / totalReq * 100   
+             totalReq += i[1]          ##storing ammout of totalreq for later devide 
+             if "5" in i[0]: 
+                total5xx += i[1] 
+                 
+        try: 
+            self.error_rate = total5xx / totalReq * 100   
+        except(ZeroDivisionError):
+            return None
+            
+            
 
 
         
         def demofunc(parameter_touple):
-            return parameter_touple [1]
+         return parameter_touple [1]
         
         result = sorted (counts.items(), key=demofunc, reverse=True)
 
@@ -63,11 +64,12 @@ class Analyzer:
 
 
     def popular_ip(self):
-        for line in self.filtered_list: 
-            self.ip_list.append(line[0]) 
+        ip_list = []
+        for obj in self.obj_entryList: 
+            ip_list.append(obj.ip) 
 
         counts = {}                                  
-        for ip in self.ip_list:
+        for ip in ip_list:
             if ip in counts: 
                 counts[ip] += 1
             else: 
@@ -84,7 +86,7 @@ class Analyzer:
         def my_sort(counts):
             return counts[1]
         
-        result = sorted (counts.items(), key= my_sort)
+        result = sorted (counts.items(), key= my_sort, reverse=True)
 
         x = 0 
         for ip, N  in result :
@@ -103,11 +105,15 @@ class Analyzer:
 
 
     def top_path (self):
-        for line in self.filtered_list: 
-            self.path_list.append(line[5]+ line[6])
+        path_list :list = []
+        for obj in self.obj_entryList:
+           path_list.append(obj.method + "  " + obj.path) 
+           
 
         counts = {}
-        for path in self.path_list:
+        for path in path_list:
+            path = path.lstrip('"')
+
             if path in counts: 
                 counts[path] += 1 
             else : 
@@ -118,57 +124,54 @@ class Analyzer:
 
         result = sorted (counts.items(), key=demofunc, reverse=True)
 
-
-        
-        # print ("TOP PATHS / : ")
+        # print ("TOP PATHS / : ") /// Splited the Method and Get to print them with fixed space in btw 
         x = 0
-        for TP, N  in result :
+        for thepath, Nummer  in result :                   
             x += 1 
-            print (f"{TP:<18}{N}")
+            thepath = thepath.split()
+            print (f"{thepath[0]:<6} {thepath[1]:<11} : {Nummer} ")
             if x == 4 :
                 break 
 
 
 
 
-
-
-
-
-
     def request_perHour(self):
-        for line in self.filtered_list :
-              self.time_list.append(line[3])
+        for obj in self.obj_entryList :
+              self.time_list.append(obj.timestamp)
 
     
         splited_time = []
         for time in self.time_list:
-            splited_time.append (time.split((":")))
+            time  = str(time)
+            splited_time.append (time.split(":"))
 
+        
             
         DateHourMIn : str
         counts = {}
         for i in splited_time: 
-            DateHourMIn = i[0] + ":" +i[1] 
-            DateHourMIn = DateHourMIn.strip("[")
-
+            DateHourMIn = i [0]
+            DateHourMIn = DateHourMIn.split()
+            DateHourMIn = DateHourMIn[0] + " time:" +DateHourMIn[1]
             
             if DateHourMIn in counts :
                 counts[DateHourMIn] += 1 
             else :
                  counts[DateHourMIn] = 1
 
+
         
-        def demofunc(parameter_touple):
-            return parameter_touple [1]
-        
-        result = sorted (counts.items(), key=demofunc, reverse=True)
+        rev_counts = reversed(counts.items())
+
+        for key,value in rev_counts:
+         print (f"{key:<16} : {value}")
+       
 
 
-        # print ("Requests per hour: ")
-        x = 0 
-        for RQ, N  in result :
-            x += 1 
-            print (f"{RQ:<18}{N}")
-            if x == 4:
-                break 
+
+    def total_bytes_sent (self):
+        totalbytes = 0 
+        for obj in self.obj_entryList: 
+            totalbytes += obj.bytes_sent 
+        print (f"Total Bytes Sent: {totalbytes}")

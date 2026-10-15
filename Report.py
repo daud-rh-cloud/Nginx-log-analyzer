@@ -4,7 +4,7 @@ from Parsers import Parser
 class Reporter:
 
 
-    def __init__(self, analyzerOBJ :Analyzer, parserOBJ :Parser):
+    def __init__(self, parserOBJ :Parser, analyzerOBJ :Analyzer):
         self.analyzerOBJ = analyzerOBJ 
         self.parserOBJ = parserOBJ
          
@@ -12,12 +12,13 @@ class Reporter:
 
     def report_Everything(self): 
         print ("=== logsentry report: sample.log ===")
-        print  (f"TOTAL Logs counted : {self.parserOBJ.count_line} Lines     "
+        print  (f"TOTAL Logs counted : {self.parserOBJ.count_line} Line ") 
+        print  ("                          "
                 "                           "
                 "                          "
-                "                          "
-                )
- 
+                "                          ") 
+                       
+               
                                  
                                 
         print ("Status codes:")
@@ -36,10 +37,17 @@ class Reporter:
         self.analyzerOBJ.popular_ip()
         print  ("                          "
                 "                           "
+        
                 "                          "
                 "                          "
                 )
 
+
+
+        
+        self.analyzerOBJ.total_bytes_sent()
+
+                        
         print ("Top paths:")
         self.analyzerOBJ.top_path()  
         print  ("                          "
@@ -56,6 +64,7 @@ class Reporter:
                 "                          "
                 )
 
+        
 
         print ("WARNING:")
         print ("rejected.log:")
