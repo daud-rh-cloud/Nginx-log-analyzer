@@ -187,5 +187,5 @@ class Analyzer:
 
       
 
-        joined_time = f"{first_obj_time.strftime("%a/%d/%b/%Y")}___{last_obj_time.strftime("%a/%d/%b/%Y")}" 
+        joined_time = f"{first_obj_time.strftime("%a-%d-%b-%Y")}___{last_obj_time.strftime("%a-%d-%b-%Y")}" 
         return joined_time

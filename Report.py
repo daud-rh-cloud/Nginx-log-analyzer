@@ -9,8 +9,8 @@ class Reporter:
         self.parserOBJ = parserOBJ
          
     def report_FILES_FromAndTO_time(self):
-        self.analyzerOBJ.getFromAndTO_timestamp()
-        pass 
+        return self.analyzerOBJ.getFromAndTO_timestamp()
+         
 
 
         

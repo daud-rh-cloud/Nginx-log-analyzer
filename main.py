@@ -14,7 +14,7 @@ Orrginal_stdout = sys.stdout
 
 
 
-File_and_TimeMap = {}                                       ##Only to Store the [fd : timestamp]
+File_and_TimeMap = {}                                                                 ##Only to Store the [fd : timestamp]
 file_obj_list = []                                                                   ## store the fileobject to keep the fd alive 
 
 
@@ -69,9 +69,7 @@ if os.path.isdir(path):                                                         
                parser = Parser (f) 
                analyzer = Analyzer (parser.CombinedFormatParser())
                reporter = Reporter (parser,analyzer)
-
-
-
+          
 
 
 
@@ -80,19 +78,17 @@ if os.path.isdir(path):                                                         
                DatesOFtheLogs = str (reporter.report_FILES_FromAndTO_time()) 
                 
                if len(sys.argv) > 2:    
-                    output_path = sys.argv[2]                                     # Just to cheak if any value even exist --> IF YES POINT the Stdout to that FILE -->  !    
-                    for file in os.listdir(output_path) :
-                         if DatesOFtheLogs in os.path.basename(file):
-                              continue
-                         else : 
-                              New_file_name = f"analyzed.log.{DatesOFtheLogs}"
-                              output_path = os.path.join(output_path,New_file_name)
-
-                              with open (output_path,"w") as out: 
-                                    sys.stdout = out                                         # Replaciing the orginal Stdout fileobejct -- > to New one
-                              reporter.report_Everything() 
-                              sys.stdout = Orrginal_stdout
-                              New_ouput_file_counter += 1                                   # bring back the stdout to orgnial File object
+                    output_path = sys.argv[2]  
+                    New_file_name = f"analyzed.log.{DatesOFtheLogs}"
+                    output_path = os.path.join(output_path,New_file_name)   
+                    if os.path.exists(output_path):                                                       # Just to cheak if any value even exist --> IF YES POINT the Stdout to that FILE -->  !    
+                         continue 
+                         
+                    else : 
+                         with open (output_path,"w") as out: 
+                               sys.stdout = out                                         # Replaciing the orginal Stdout fileobejct -- > to New one
+                               reporter.report_Everything() 
+                               sys.stdout = Orrginal_stdout                                                # bring back the stdout to orgnial File object
                                                                              
                else :
                     reporter.report_Everything()  ## Print at terminal 
