@@ -8,7 +8,12 @@ class Reporter:
         self.analyzerOBJ = analyzerOBJ 
         self.parserOBJ = parserOBJ
          
+    def report_FILES_FromAndTO_time(self):
+        self.analyzerOBJ.getFromAndTO_timestamp()
+        pass 
 
+
+        
 
     def report_Everything(self): 
         print ("=== logsentry report: sample.log ===")

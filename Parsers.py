@@ -35,6 +35,7 @@ class Parser:
  
             try: # remove unvalid time (strptime()--> only filter valid times)
              timestamp = datetime.datetime.strptime(rem_timebraket,  '%d/%b/%Y:%H:%M:%S' ) 
+             
              logobj = LogEntry (ip=line[0],timestamp=timestamp,method=line[5],path=line[6],protocol=line[7],status=line [8],bytes_sent=line[9],user_agent=line[11])
             except (ValueError):
              self.rejected_line.append((f"Line : {"--"} got rejected because of invalid Timestamp"))
@@ -44,5 +45,5 @@ class Parser:
 
 
 
-        return self.obj_entryList
+        return self.obj_entryList  
         

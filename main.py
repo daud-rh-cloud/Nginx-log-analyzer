@@ -6,7 +6,7 @@ import sys
 import datetime 
 import gzip
 
-# path = "/var/log/nginx/"
+# path = "/home/daud/smallfile.txt" 
 path = sys.argv[1]  
 
 output_path = None
@@ -14,8 +14,8 @@ Orrginal_stdout = sys.stdout
 
 
 
-File_and_TimeMap = {}                ##Only to Store the [fd : timestamp]
-file_obj_list = []                  ## store the fileobject to keep the fd alive 
+File_and_TimeMap = {}                                       ##Only to Store the [fd : timestamp]
+file_obj_list = []                                                                   ## store the fileobject to keep the fd alive 
 
 
 ##SORT OLDEST TO NEWEST
@@ -75,23 +75,27 @@ if os.path.isdir(path):                                                         
 
 
 
-## OUTPUT -> SET THE RIGHT FD POINTER, CREATE SEPARATE OUTPUT FILES FOR EACH LOG FILE --> AND REPORT THEM () 
-## ---> only accept Folder also as a output Paths 
+## OUTPUT -> Should we out put ?
 
-               now = datetime.datetime.now().strftime("%a %d %b %Y, %I:%M")
-               
+               DatesOFtheLogs = str (reporter.report_FILES_FromAndTO_time()) 
+                
                if len(sys.argv) > 2:    
                     output_path = sys.argv[2]                                     # Just to cheak if any value even exist --> IF YES POINT the Stdout to that FILE -->  !    
-                    file :str = f"analyzed.log.{New_ouput_file_counter}.{now}"                        # Create New File Each time and Join them  with the folder path                          
-                    output_path = os.path.join (output_path,file)         
-                    with open (output_path,"w") as out: 
-                     sys.stdout = out                                             # Replaciing the orginal Stdout fileobejct -- > to New one
-                     reporter.report_Everything() 
-                     sys.stdout = Orrginal_stdout
-                     New_ouput_file_counter += 1                                   # bring back the stdout to orgnial File object
+                    for file in os.listdir(output_path) :
+                         if DatesOFtheLogs in os.path.basename(file):
+                              continue
+                         else : 
+                              New_file_name = f"analyzed.log.{DatesOFtheLogs}"
+                              output_path = os.path.join(output_path,New_file_name)
+
+                              with open (output_path,"w") as out: 
+                                    sys.stdout = out                                         # Replaciing the orginal Stdout fileobejct -- > to New one
+                              reporter.report_Everything() 
+                              sys.stdout = Orrginal_stdout
+                              New_ouput_file_counter += 1                                   # bring back the stdout to orgnial File object
                                                                              
                else :
-                    reporter.report_Everything()
+                    reporter.report_Everything()  ## Print at terminal 
 
           except: 
                print ("Not a access.Logfile or can be a Permission Error! ")
@@ -103,7 +107,7 @@ if os.path.isdir(path):                                                         
 
 
 
-## IF THE SOURCE LOG PATH IS A SPECEFIC ONE FILE  ---> Output also to a singel file /folder/file   
+## IF LOG PATH IS A SPECEFIC ONE FILE  ---> Output also to a singel file /folder/file   
 
  
 else:   
@@ -111,7 +115,7 @@ else:
       #--> Cheak if the file is a (.gzip)  
      filename = os.path.basename(path)                           # abstruct the the file name from full pathname 
      if ".gz" in filename: 
-          f = gzip.open(path, "r") 
+          f = gzip.open(path, "rt") 
      else : 
           f =  open (path, "r") 
      
@@ -134,5 +138,3 @@ else:
 
 f.close()
  
-
-

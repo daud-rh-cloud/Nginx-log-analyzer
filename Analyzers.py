@@ -1,4 +1,6 @@
 from Parsers import Parser
+from Models import LogEntry
+from datetime import datetime 
 
 class Analyzer: 
 
@@ -162,7 +164,7 @@ class Analyzer:
 
 
         
-        rev_counts = reversed(counts.items())
+        rev_counts = reversed(counts.items())   ## it will return iterator object (has __next__()) but wuith the item being in reversed 
 
         for key,value in rev_counts:
          print (f"{key:<16} : {value}")
@@ -175,3 +177,15 @@ class Analyzer:
         for obj in self.obj_entryList: 
             totalbytes += obj.bytes_sent 
         print (f"Total Bytes Sent: {totalbytes}")
+
+
+
+    def getFromAndTO_timestamp (self):
+        last_obj_nummer = len(self.obj_entryList)
+        first_obj_time = self.obj_entryList[0].timestamp
+        last_obj_time = self.obj_entryList[last_obj_nummer - 1].timestamp   ##the len() counted from 1 so we have to -1
+
+      
+
+        joined_time = f"{first_obj_time.strftime("%a/%d/%b/%Y")}___{last_obj_time.strftime("%a/%d/%b/%Y")}" 
+        return joined_time
