@@ -14,6 +14,7 @@ Orrginal_stdout = sys.stdout
 
 
 
+
 File_and_TimeMap = {}                                                                 ##Only to Store the [fd : timestamp]
 file_obj_list = []                                                                   ## store the fileobject to keep the fd alive 
 
@@ -78,23 +79,21 @@ if os.path.isdir(path):                                                         
                DatesOFtheLogs = str (reporter.report_FILES_FromAndTO_time()) 
                 
                if len(sys.argv) > 2:    
-                    output_path = sys.argv[2]  
-                    New_file_name = f"analyzed.log.{DatesOFtheLogs}"
-                    output_path = os.path.join(output_path,New_file_name)   
-                    if os.path.exists(output_path):                                                       # Just to cheak if any value even exist --> IF YES POINT the Stdout to that FILE -->  !    
-                         continue 
+                    output_path = sys.argv[2]                                                            # Just to cheak if any value even exist --> IF YES POINT the Stdout to that FILE -->  !                           
+                    New_file_name = f"analyzed.log..{DatesOFtheLogs}"                                    # Naming the file with the dates 
+                    output_path = os.path.join(output_path,New_file_name)                 
+                                                                                                        
                          
-                    else : 
-                         with open (output_path,"w") as out: 
-                               sys.stdout = out                                         # Replaciing the orginal Stdout fileobejct -- > to New one
+                    with open (output_path,"w") as out: 
+                               sys.stdout = out                                                             # Replaciing the orginal Stdout fileobejct -- > to New one
                                reporter.report_Everything() 
                                sys.stdout = Orrginal_stdout                                                # bring back the stdout to orgnial File object
                                                                              
                else :
                     reporter.report_Everything()  ## Print at terminal 
 
-          except: 
-               print ("Not a access.Logfile or can be a Permission Error! ")
+          except Exception as e:
+               print(e)
 
           
 
@@ -124,13 +123,26 @@ else:
                output_path = sys.argv[2]
                with open (output_path,"w") as out: 
                     sys.stdout = out     
-                    reporter.report_Everything()                  # Replaciing the orginal Stdout fileobejct  -- > to New one
+                    reporter.report_Everything()  
                     sys.stdout = Orrginal_stdout  
           else :    
-              reporter.report_Everything()     
+              reporter.report_Everything()
+              
      except:
           print ("File not found or permission error")
           
 
 f.close()
+ 
+
+
+
+# with open (path , "r")as f :
+#       parser = Parser(f)
+#       analyzer = Analyzer (parser.CombinedFormatParser())
+#       reporter = Reporter(parser,analyzer)
+
+# reporter.report_Everything()
+
+
  
