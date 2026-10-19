@@ -26,8 +26,6 @@ A whole folder (works with rotated .gz logs too), one report per log file:
 python3 main.py /var/log/nginx/ reports/
 ```
 
-The reports folder has to exist first. On most systems you need to be in the `adm` group
-to read `/var/log/nginx`.
 
 ## Example output
 
