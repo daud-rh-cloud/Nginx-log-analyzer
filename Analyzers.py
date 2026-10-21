@@ -35,7 +35,8 @@ class Analyzer:
                 total5xx += i[1] 
                  
         try: 
-            self.error_rate = total5xx / totalReq * 100   
+            self.error_rate = total5xx / totalReq * 100  
+     
         except(ZeroDivisionError):
             return None
             
@@ -45,23 +46,25 @@ class Analyzer:
         
         def demofunc(parameter_touple):
          return parameter_touple [1]
-        result = sorted (counts.items(), key=demofunc, reverse=True)
+        result =dict (sorted (counts.items(), key=demofunc, reverse=True))
 
 
-        list_of_statuscode = []            ## a list so we can return the value istead of prit ()
-        x = 0       
-        # print ("Status code / : ")
-        for STCODE, N  in result:
-         list_of_statuscode.append (f"{STCODE:<18}{N}")     
+        return result 
 
-        return list_of_statuscode
+        # list_of_statuscode = []            ## a list so we can return the value istead of prit ()
+        # x = 0       
+        # # print ("Status code / : ")
+        # for STCODE, N  in result:
+        #  list_of_statuscode.append (f"{STCODE:<18}{N}")     
+
+        # return list_of_statuscode
 
 
 
          
 
     def calculateErrorRate(self): 
-        return (f"5xx Error rate: {self.error_rate :.2f}% ")
+        return  self.error_rate   
 
 
 
@@ -94,17 +97,20 @@ class Analyzer:
         def my_sort(counts):
             return counts[1]
         
-        result = sorted (counts.items(), key= my_sort, reverse=True)
+        result = dict(sorted (counts.items(), key= my_sort, reverse=True))
 
-        list_of_ip = []
-        x = 0 
-        for ip, N  in result :
-         x += 1 
-         list_of_ip.append(f"{ip:<18}{N}")
-         if x == 4:
-             break 
+        return result
 
-        return list_of_ip
+
+        # list_of_ip = []
+        # x = 0 
+        # for ip, N  in result :
+        #  x += 1 
+        #  list_of_ip.append(f"{ip:<18}{N}")
+        #  if x == 4:
+        #      break 
+
+        # return list_of_ip
 
          
  

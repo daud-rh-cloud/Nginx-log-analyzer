@@ -8,8 +8,8 @@ import gzip
 import json  
 
 
-#path = "/home/daud/smallfile.txt" 
-path = sys.argv[1]  
+path = "/home/daud/smallfile.txt" 
+# path = sys.argv[1]  
 
 output_path = None
 Orrginal_stdout = sys.stdout
