@@ -5,8 +5,10 @@ import os
 import sys 
 import datetime 
 import gzip
+import json  
 
-# path = "/home/daud/smallfile.txt" 
+
+#path = "/home/daud/smallfile.txt" 
 path = sys.argv[1]  
 
 output_path = None
@@ -76,7 +78,7 @@ if os.path.isdir(path):                                                         
 
 ## OUTPUT -> Should we out put ?
 
-               DatesOFtheLogs = str (reporter.report_FILES_FromAndTO_time()) 
+               DatesOFtheLogs = str (analyzer.getFromAndTO_timestamp()) 
                 
                if len(sys.argv) > 2:    
                     output_path = sys.argv[2]                                                            # Just to cheak if any value even exist --> IF YES POINT the Stdout to that FILE -->  !                           
@@ -86,14 +88,15 @@ if os.path.isdir(path):                                                         
                          
                     with open (output_path,"w") as out: 
                                sys.stdout = out                                                             # Replaciing the orginal Stdout fileobejct -- > to New one
-                               reporter.report_Everything() 
-                               sys.stdout = Orrginal_stdout                                                # bring back the stdout to orgnial File object
+                               json_data = json.dumps(reporter.report_Everything(), indent=2)  
+                               print (json_data)
+                               sys.stdout  = Orrginal_stdout                                                # bring back the stdout to orgnial File object
                                                                              
                else :
-                    reporter.report_Everything()  ## Print at terminal 
-
+                    json_data = json.dumps (reporter.report_Everything() ) ## Print at terminal 
+                    print (json_data)
           except Exception as e:
-               print(e)
+                print (e)
 
           
 
@@ -122,14 +125,16 @@ else:
           if len(sys.argv) > 2:                                   # Just to cheak if any value even exist --> IF YES POINT the Stdout to that FILE -->  ! 
                output_path = sys.argv[2]
                with open (output_path,"w") as out: 
-                    sys.stdout = out     
-                    reporter.report_Everything()  
+                    sys.stdout = out   
+                    json_data = json.dumps(reporter.report_Everything(), indent=2)  
+                    print (json_data)
                     sys.stdout = Orrginal_stdout  
           else :    
-              reporter.report_Everything()
+              json_data = json.dumps(reporter.report_Everything(), indent=2)
+              print (json_data)
               
-     except:
-          print ("File not found or permission error")
+     except Exception as e:
+          print (e)
           
 
 f.close()
@@ -142,7 +147,6 @@ f.close()
 #       analyzer = Analyzer (parser.CombinedFormatParser())
 #       reporter = Reporter(parser,analyzer)
 
-# reporter.report_Everything()
-
+# print (analyzer.status_codes())
 
  

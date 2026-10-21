@@ -45,17 +45,23 @@ class Analyzer:
         
         def demofunc(parameter_touple):
          return parameter_touple [1]
-        
         result = sorted (counts.items(), key=demofunc, reverse=True)
 
+
+        list_of_statuscode = []            ## a list so we can return the value istead of prit ()
         x = 0       
         # print ("Status code / : ")
         for STCODE, N  in result:
-         print (f"{STCODE:<18}{N}")
+         list_of_statuscode.append (f"{STCODE:<18}{N}")     
+
+        return list_of_statuscode
+
+
+
          
 
     def calculateErrorRate(self): 
-        print (f"5xx Error rate: {self.error_rate :.2f}% ")
+        return (f"5xx Error rate: {self.error_rate :.2f}% ")
 
 
 
@@ -90,13 +96,15 @@ class Analyzer:
         
         result = sorted (counts.items(), key= my_sort, reverse=True)
 
+        list_of_ip = []
         x = 0 
         for ip, N  in result :
          x += 1 
-         print (f"{ip:<18}{N}")
+         list_of_ip.append(f"{ip:<18}{N}")
          if x == 4:
              break 
-        
+
+        return list_of_ip
 
          
  
@@ -126,14 +134,24 @@ class Analyzer:
 
         result = sorted (counts.items(), key=demofunc, reverse=True)
 
-        # print ("TOP PATHS / : ") /// Splited the Method and Get to print them with fixed space in btw 
+        # print ("TOP PATHS / : ") /// Splited the Method and GET/ to print them with fixed space in btw 
+        list_of_paths = []
         x = 0
         for thepath, Nummer  in result :                   
             x += 1 
-            thepath = thepath.split()
-            print (f"{thepath[0]:<6} {thepath[1]:<11} : {Nummer} ")
+            thepath = thepath.split()      
+            list_of_paths.append(f"{thepath[0]:<6} {thepath[1]:<11} : {Nummer} ")
             if x == 4 :
                 break 
+
+        return list_of_paths
+
+
+
+
+
+
+
 
 
 
@@ -166,9 +184,11 @@ class Analyzer:
         
         rev_counts = reversed(counts.items())   ## it will return iterator object (has __next__()) but wuith the item being in reversed 
 
-        for key,value in rev_counts:
-         print (f"{key:<16} : {value}")
-       
+        list_of_times = []
+        for key,value in rev_counts: 
+           list_of_times.append(f"{key:<16} : {value}")             
+        
+        return list_of_times
 
 
 
@@ -176,7 +196,7 @@ class Analyzer:
         totalbytes = 0 
         for obj in self.obj_entryList: 
             totalbytes += obj.bytes_sent 
-        print (f"Total Bytes Sent: {totalbytes}")
+        return (f"Total Bytes Sent: {totalbytes}")
 
 
 
@@ -189,3 +209,11 @@ class Analyzer:
 
         joined_time = f"{first_obj_time.strftime("%d-%b-%Y")}___{last_obj_time.strftime("%d-%b-%Y")}" 
         return joined_time
+
+
+
+    # def rejected_lines (self):
+    #     return (Parser.rejected_line) 
+             
+        
+                
